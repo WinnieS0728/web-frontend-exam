@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#banner {
+  background: url("./assets/imgs/bg-image.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
