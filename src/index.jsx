@@ -8,6 +8,7 @@ import { Factory, Model, Server } from "miragejs";
 import ReactQueryProvider from "./providers/react query";
 
 import "./global.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const filterFormat = (data, companyName, educationLevel, salaryLevel) => {
   let result = data;
@@ -149,6 +150,17 @@ new Server({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ReactQueryProvider>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <>
+              <App />
+            </>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   </ReactQueryProvider>
 );

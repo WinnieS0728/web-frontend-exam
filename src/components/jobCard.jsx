@@ -5,7 +5,7 @@ import money from "../assets/icons/money.svg";
 
 export default function JobCard({ job }) {
   return (
-    <article className='rounded-md p-4 border border-gray-500 flex flex-col justify-center gap-[10px]'>
+    <article className='rounded-md hover:shadow-my_shadow p-4 text-red border border-gray-500 grid grid-rows-subgrid row-span-4 gap-[10px]'>
       <h5 className='text-5 font-bold'>{job.companyName}</h5>
       <div className='flex flex-col gap-2'>
         <Info

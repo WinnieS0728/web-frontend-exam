@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useJobList } from "./joblist.query";
+import { Pagination } from "@mui/material";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import JobCard from "../jobCard";
+import { useJobList } from "./joblist.query";
+import { useResize } from "../../hooks/resize.hook";
 
 export default function JobList() {
-  const [page, setPage] = useState(1);
-  const [device, setDevice] = useState("phone");
+  const setSearch = useSearchParams()[1];
+
+  const { per_page } = useResize();
 
   const {
     data: jobList,
@@ -12,27 +16,21 @@ export default function JobList() {
     isError,
     error,
   } = useJobList({
-    page,
-    device,
+    per_page,
   });
 
-  useEffect(() => {
-    function handleChange() {
-      const { innerWidth } = window;
+  function handlePageChange(_, value) {
+    setSearch(
+      (prev) => {
+        prev.set("page", value);
 
-      if (innerWidth <= 1024) {
-        setDevice("phone");
-      } else {
-        setDevice("computer");
+        return prev;
+      },
+      {
+        replace: true,
       }
-    }
-
-    window.addEventListener("resize", handleChange);
-
-    return () => {
-      window.removeEventListener("resize", handleChange);
-    };
-  }, []);
+    );
+  }
 
   if (isPending) {
     return <p>loading...</p>;
@@ -43,13 +41,23 @@ export default function JobList() {
   }
 
   return (
-    <section className='grid gap-[10px]'>
-      {jobList?.data.map((job) => (
-        <JobCard
-          key={job.id}
-          job={job}
-        />
-      ))}
-    </section>
+    <>
+      <section className='grid gap-[10px] grid-cols-[repeat(auto-fit,minmax(430px,1fr))] grid-rows-[repeat(4,auto)]'>
+        {jobList.total === 0 && (
+          <p className='text-center py-2'>查無資料, 請調整搜尋條件</p>
+        )}
+        {jobList?.data.map((job) => (
+          <JobCard
+            key={job.id}
+            job={job}
+          />
+        ))}
+      </section>
+      <Pagination
+        count={Math.round(jobList.total / per_page)}
+        onChange={handlePageChange}
+        className='px-4 py-2 flex justify-center items-center'
+      />
+    </>
   );
 }

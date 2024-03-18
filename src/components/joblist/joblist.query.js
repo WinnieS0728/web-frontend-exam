@@ -1,29 +1,47 @@
-import { useQuery } from "@tanstack/react-query";
-export function useJobList({ page, device }) {
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import api from "../../api/index";
+import { useSearchParams } from "react-router-dom";
+import { useResize } from "../../hooks/resize.hook";
+
+export function useJobList({ per_page = 4 }) {
+  const search = useSearchParams()[0];
+
+  const { showFilter } = useResize();
+
+  const page = search.get("page") || "1";
+  const company_name = search.get("company_name") || "";
+  const education_level = search.get("education_level") || "";
+  const salary_level = search.get("salary_level") || "";
+
   const query = useQuery({
     queryKey: [
       "jobList",
+      page,
+      per_page,
+      showFilter,
       {
-        page,
-        device,
+        company_name,
+        education_level,
+        salary_level,
       },
     ],
-    queryFn: async ({ company_name, education_level, salary_level }) => {
+    placeholderData: keepPreviousData,
+    queryFn: async () => {
       try {
-        const educationList = await getEducationLevel();
-        const salaryList = await getSalaryLevel();
-        const jobList = await getJobList(
-          device === "phone"
+        const educationList = await api.getEducationLevel();
+        const salaryList = await api.getSalaryLevel();
+        const jobList = await api.getJobList(
+          showFilter
             ? {
-                per_page: 4,
-                page,
-              }
-            : {
-                per_page: 6,
+                per_page,
                 page,
                 company_name,
-                education_level,
-                salary_level,
+                education_level: education_level === "0" ? "" : education_level,
+                salary_level: salary_level === "0" ? "" : salary_level,
+              }
+            : {
+                per_page,
+                page,
               }
         );
 
@@ -51,44 +69,6 @@ export function useJobList({ page, device }) {
       }
     },
   });
-
-  async function getJobList({ per_page, page, ...props }) {
-    try {
-      const searchParams = new URLSearchParams({
-        pre_page: per_page,
-        page,
-        ...props,
-      });
-      const res = await fetch("/api/v1/jobs?" + searchParams);
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error("getJobList", error);
-      throw error;
-    }
-  }
-
-  async function getEducationLevel() {
-    try {
-      const res = await fetch("/api/v1/educationLevelList");
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error("getEducation", error);
-      throw error;
-    }
-  }
-
-  async function getSalaryLevel() {
-    try {
-      const res = await fetch("/api/v1/salaryLevelList");
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error("getSalary", error);
-      throw error;
-    }
-  }
 
   return query;
 }
