@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: noto;
+  src: url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap");
+}
+
+* {
+  font-family: noto;
+}
+
 #banner {
   background: url("./assets/imgs/bg-image.jpeg");
   background-repeat: no-repeat;
@@ -15,12 +24,6 @@
 
   & :is(h1, h2) {
     --symbol-margin: 4px;
-
-    &::before,
-    &::after {
-      display: inline-block;
-      transform: translateY(-1px);
-    }
 
     &::before {
       content: "[";

@@ -16,7 +16,7 @@ export function useResize() {
         setShowFilter(true);
       }
     }
-
+    handleChange();
     window.addEventListener("resize", handleChange);
 
     return () => {
