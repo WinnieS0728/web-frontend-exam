@@ -21,7 +21,7 @@ export default function FilterForm() {
   });
 
   function onSubmit(data) {
-    console.log(data);
+    // console.log(data);
     setSearch(data, {
       replace: true,
     });

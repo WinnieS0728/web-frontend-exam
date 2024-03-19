@@ -7,3 +7,55 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+#job-detail {
+  display: grid;
+  gap: 16px;
+  padding: 0.5rem;
+
+  & :is(h1, h2) {
+    --symbol-margin: 4px;
+
+    &::before,
+    &::after {
+      display: inline-block;
+      transform: translateY(-1px);
+    }
+
+    &::before {
+      content: "[";
+      margin-right: var(--symbol-margin);
+    }
+
+    &::after {
+      content: "]";
+      margin-left: var(--symbol-margin);
+    }
+  }
+
+  ul {
+    padding-left: 1rem;
+  }
+
+  p {
+    text-indent: 2rem;
+  }
+
+  a {
+    color: dodgerblue;
+  }
+}
+
+.swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  opacity: 1;
+  background: #ccc;
+  top: 100%;
+}
+
+.swiper-pagination-bullet-active {
+  border-radius: 8px;
+  width: 22px;
+  background: #ee8928;
+}

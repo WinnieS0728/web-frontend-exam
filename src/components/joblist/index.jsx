@@ -32,10 +32,6 @@ export default function JobList() {
     );
   }
 
-  if (isPending) {
-    return <p>loading...</p>;
-  }
-
   if (isError) {
     return <p>{error.message}</p>;
   }
@@ -43,7 +39,14 @@ export default function JobList() {
   return (
     <>
       <section className='grid gap-[10px] grid-cols-[repeat(auto-fit,minmax(430px,1fr))] grid-rows-[repeat(4,auto)]'>
-        {jobList.total === 0 && (
+        {isPending &&
+          [...Array(per_page)].map((_, index) => (
+            <JobCard
+              key={index}
+              isLoading
+            />
+          ))}
+        {jobList?.total === 0 && (
           <p className='text-center py-2'>查無資料, 請調整搜尋條件</p>
         )}
         {jobList?.data.map((job) => (
@@ -53,11 +56,13 @@ export default function JobList() {
           />
         ))}
       </section>
-      <Pagination
-        count={Math.round(jobList.total / per_page)}
-        onChange={handlePageChange}
-        className='px-4 py-2 flex justify-center items-center'
-      />
+      {jobList && (
+        <Pagination
+          count={Math.round(jobList.total / per_page)}
+          onChange={handlePageChange}
+          className='px-4 py-2 flex justify-center items-center'
+        />
+      )}
     </>
   );
 }

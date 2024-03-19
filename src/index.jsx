@@ -6,9 +6,9 @@ import educationList from "./constants/educationList";
 import salaryList from "./constants/salaryList";
 import { Factory, Model, Server } from "miragejs";
 import ReactQueryProvider from "./providers/react query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./global.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const filterFormat = (data, companyName, educationLevel, salaryLevel) => {
   let result = data;
