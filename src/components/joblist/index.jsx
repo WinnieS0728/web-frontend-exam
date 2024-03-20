@@ -38,7 +38,7 @@ export default function JobList() {
 
   return (
     <>
-      <section className='grid gap-[10px] grid-cols-[repeat(auto-fit,minmax(430px,1fr))] grid-rows-[repeat(4,auto)]'>
+      <section className='grid gap-[10px] grid-cols-[repeat(auto-fit,minmax(300px,1fr))] grid-rows-[repeat(4,auto)]'>
         {isPending &&
           [...Array(per_page)].map((_, index) => (
             <JobCard

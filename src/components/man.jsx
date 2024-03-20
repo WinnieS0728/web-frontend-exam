@@ -48,7 +48,7 @@ export default function ManImage() {
         <img
           src={man}
           alt='man'
-          className='absolute inset-0 z-20'
+          className='absolute inset-0'
         />
         <motion.img
           src={leftEye}

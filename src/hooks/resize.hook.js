@@ -8,7 +8,7 @@ export function useResize() {
     function handleChange() {
       const { innerWidth } = window;
 
-      if (innerWidth <= 640) {
+      if (innerWidth < 640) {
         setPer_page(4);
         setShowFilter(false);
       } else {

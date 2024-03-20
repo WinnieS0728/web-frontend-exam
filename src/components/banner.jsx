@@ -13,7 +13,7 @@ export default function Banner() {
       <motion.img
         src={logo}
         alt='logo'
-        className='w-1/3 absolute left-[55%] bottom-[8%] z-50'
+        className='w-1/3 absolute left-[55%] bottom-[18%] z-50'
         animate={{
           scale: [1, 1.3, 1],
         }}
