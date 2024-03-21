@@ -1,54 +1,37 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import man_bg from "../assets/imgs/man-bg.png";
-import man from "../assets/imgs/man.png";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import React, { useEffect, useRef } from "react";
 import leftEye from "../assets/imgs/eye-left.png";
 import rightEye from "../assets/imgs/eye-right.png";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import man_bg from "../assets/imgs/man-bg.png";
+import man from "../assets/imgs/man.png";
+import { useMouse } from "../hooks/mouse";
 
 export default function ManImage() {
   const containerRef = useRef(null);
+
+  const { mouseXProgress, mouseYProgress } = useMouse({
+    target: containerRef,
+  });
+
   const mouse = {
-    x: useMotionValue(0),
-    y: useMotionValue(0),
+    x: useMotionValue(mouseXProgress),
+    y: useMotionValue(mouseYProgress),
   };
 
-  const handleMouseMove = useCallback(
-    (e) => {
-      const { clientX, clientY } = e;
-      const { clientWidth, clientHeight } = containerRef.current;
-      const x = clientX / clientWidth;
-      const y = clientY / clientHeight;
-      mouse.x.set(x);
-      mouse.y.set(y);
-    },
-    [mouse.x, mouse.y]
-  );
+  useEffect(() => {
+    mouse.x.set(mouseXProgress);
+    mouse.y.set(mouseYProgress);
+  }, [mouse.x, mouse.y, mouseXProgress, mouseYProgress]);
 
   const transformX = useTransform(mouse.x, [0, 1], [-4, 4]);
   const transformY = useTransform(mouse.y, [0, 1], [-1, 3]);
 
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, [handleMouseMove]);
-
   return (
-    <div>
-      <div
-        className='relative w-3/4 max-w-[1080px]'
-        ref={containerRef}
-      >
+    <div ref={containerRef}>
+      <div className='relative w-3/4 max-w-[1080px]'>
         <img
           src={man_bg}
           alt='man background'
-        />
-        <img
-          src={man}
-          alt='man'
-          className='absolute inset-0'
         />
         <motion.img
           src={leftEye}
@@ -69,6 +52,11 @@ export default function ManImage() {
             y: transformY,
             scale: 0.5,
           }}
+        />
+        <img
+          src={man}
+          alt='man'
+          className='absolute inset-0'
         />
       </div>
     </div>
